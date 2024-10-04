@@ -1,0 +1,267 @@
+CREATE TABLE IF NOT EXISTS producto(
+    `id_Producto` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `Nombre` varchar(255) NOT NULL,
+    `id_proveedor` bigint, --ES EL QUE OBTENDRA INFO DE SKU POR PRODUCTO
+    `Stock` int(20),
+    `Precio` int(40), --PRECIO ASIGNADO POR LA COMPAÑIA 
+    `Categoria` varchar(255) --TABLA DE CATEGORI
+    `Alta_De_Producto` date
+    `SKU_INTERNO` --SE OBTIENE DEL NOMBRE DE PROVEEDOR+NUMERODEALMACEN+SKUPROVEEDOR+
+)
+
+
+-- PROVITIONAL TABLE_PRODUCTO_ML
+    CREATE TABLE IF NOT EXISTS productos_ML (
+    id_productosML BIGINT AUTO_INCREMENT PRIMARY KEY,
+    SKU VARCHAR(50), -- Código único del producto
+    CategoriaID INT, -- Identificador de la categoría a la que pertenece
+    Titulo VARCHAR(255), -- Título del producto
+    Precio DECIMAL(10,2), -- Precio del producto con dos decimales
+    Comision DECIMAL(10,2), -- Comisión por venta
+    Envio DECIMAL(10,2), 
+    Stock INT, 
+    Ventas INT, 
+    Estatus ENUM('active', 'paused', 'under_review', 'closed'),
+    vendedor VARCHAR(100) 
+);
+-- END PROVITATIONAL TABLE
+
+-- HISTORIAL DE LA TABLA PRODUCTOS_ML
+
+CREATE TABLE historial_productos (
+    id_historial INT AUTO_INCREMENT PRIMARY KEY,
+    id_productosML BIGINT,  -- Llave foránea que referencia a productos_ml
+    Precio DECIMAL(10,2),
+    Comision DECIMAL(10,2),
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    version INT,
+    FOREIGN KEY (id_productosML) REFERENCES productos_ml(id_productosML) ON DELETE CASCADE
+);
+
+-- FIN TABLA
+
+CREATE TABLE IF NOT EXISTS producto_ML (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    site_id INT,
+    title VARCHAR(255),
+    seller_id INT,
+    category_id INT,
+    user_product_id INT,
+    official_store_id INT,
+    price DECIMAL(10, 2),
+    base_price DECIMAL(10, 2),
+    original_price DECIMAL(10, 2),
+    inventory_id INT,
+    currency_id VARCHAR(3),
+    initial_quantity INT,
+    available_quantity INT,
+    sold_quantity INT,
+    sale_terms TEXT,
+    buying_mode VARCHAR(20),
+    listing_type_id INT,
+    start_time DATETIME,
+    stop_time DATETIME,
+    end_time DATETIME,
+    expiration_time DATETIME,
+    permalink VARCHAR(255),
+    thumbnail_id INT,
+    thumbnail VARCHAR(255),
+    pictures TEXT, -- Assuming a JSON array or string for multiple images
+    video_id VARCHAR(20),
+    descriptions TEXT,
+    accepts_mercadopago BOOLEAN,
+    non_mercado_pago_payment_methods TEXT, -- Assuming a JSON array or string
+    shipping TEXT, -- Assuming a JSON object or string for shipping details
+    international_delivery_mode BOOLEAN,
+    seller_address TEXT,
+    seller_contact TEXT,
+    location VARCHAR(100),
+    geolocation POINT,
+    coverage_areas TEXT, -- Assuming a JSON array or string
+    attributes TEXT, -- Assuming a JSON object or string for product attributes
+    warnings TEXT, -- Assuming a JSON array or string for warnings
+    listing_source VARCHAR(20),
+    variations TEXT, -- Assuming a JSON array or string for product variations
+    status VARCHAR(20),
+    sub_status VARCHAR(20),
+    tags TEXT, -- Assuming a JSON array or string
+    warranty VARCHAR(255),
+    catalog_product_id INT,
+    domain_id INT,
+    seller_custom_field TEXT,
+    parent_item_id INT,
+    differential_pricing BOOLEAN,
+    deal_ids TEXT, -- Assuming a JSON array or string
+    automatic_relist BOOLEAN,
+    date_created DATETIME,
+    last_updated DATETIME,
+    health VARCHAR(20),
+    catalog_listing BOOLEAN,
+    item_relations TEXT, -- Assuming a JSON array or string
+    channels TEXT, -- Assuming a JSON array or string
+    error TEXT
+)
+
+CREATE TABLE IF NOT EXISTS Categoria(
+    `id_Categoria` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `Nombre_Categoria` varchar(255)
+) --solo paraa tener el registro de las cotegorias que tendra cada refaccion a la moto
+
+CREATE TABLE IF NOT EXIST SKU_INTERNO(
+    `id_SKU` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id_Sucursal` BIGINT, 
+    `id_Proveedor` BIGINT,
+    `id_Producto` BIGINT,
+    `SKU_INTERNO` varchar(150)
+)
+
+CREATE TABLE IF NOT EXISTS Usuario(
+    `id_Usuario` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `Nombre` varchar(255),
+    `Apellido_Materno` var(255),
+    `Apellido_Paterno` var(255),
+    `NickName` varchar(5),
+    `password` varchar(10)
+)
+
+CREATE TABLE IF NOT EXISTS competencias(
+id_competencia int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+seller_id INT(150) not null,
+MLM varchar(150) not null
+)
+
+
+CREATE TABLE IF NOT EXISTS sucursal(
+    `id_Sucursal` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `Nombre_Sucursal` varchar(150),
+    `Domicilio` varchar(200),
+    `Capacidad` int(100)
+)
+
+CREATE TABLE IF NOT EXISTS Proveedor(
+    `id_proveedor` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+    `Nombre` varchar(255),
+    `
+    `Nombre_Articulo` varchar(255),
+    `PrecioBase` int(20)
+    `Alta_De_Proveedor` date
+)
+
+CREATE TABLE IF NOT EXISTS `Prod-Car-Relation`(
+    `id_Prod_Car_Relacion` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id_Caracteristicas` bigint, 
+    `id_Producto` bigint
+)
+
+
+CREATE TABLE IF NOT EXIST Competencia(
+    `id_competencia` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `NicknameML` varchar(150),
+    `Seller_Id` int(20),
+    `Metadata_ML` string
+)
+
+CREATE TABLE IF NOT EXISTS historyChannel(
+    `id_HistoryChannel` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id_Usuario` BIGINT, 
+    `Movimiento` varchar(200),
+    `Categoria` varchar(200),
+    `Permisos` longtext  
+)
+
+-- CREATE TABLE Productos (
+--   id_Producto bigint NOT NULL PRIMARY KEY,
+--   SKU varchar,
+--   Nombre varchar,
+--   id_proveedor bigint,
+--   Stock bigint,
+--   Precio decimal,
+--   Categoria varchar
+-- );
+
+-- COMMENT ON COLUMN Productos.id_Producto IS 'Primarykey_Identifier
+-- ';
+
+-- CREATE TABLE Usuario (
+--   id_Usuario bigint NOT NULL PRIMARY KEY
+-- );
+
+
+-- CREATE TABLE Sucursal (
+--   id_Sucursal bigint NOT NULL PRIMARY KEY
+-- );
+
+
+-- CREATE TABLE Proveedor (
+--   id_proveedor bigint NOT NULL PRIMARY KEY,
+--   Nombre bigint,
+--   SKU bigint,
+--   Nombre_Articulo bigint,
+--   PrecioBase bigint
+-- );
+
+
+-- CREATE TABLE Caracteristicas (
+--   id_CaracteristicasProd bigint NOT NULL PRIMARY KEY,
+--   Modelo varchar,
+--   Marca varchar,
+--   Anio year,
+--   Cilindraje int,
+--   MotoName varchar,
+--   Especificaciones multilinestring
+-- );
+
+
+-- CREATE TABLE Prod-Car-Relation (
+--   id_Prod_Car_Relacion bigint NOT NULL PRIMARY KEY,
+--   id_CaracteristicasProd bigint,
+--   id_Producto bigint
+-- );
+
+-- TABLA DE HISTORIAL DE CAMBIOS
+CREATE TABLE IF NOT EXISTS transaction_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user VARCHAR(255) NOT NULL,
+    action_type ENUM('INSERT', 'UPDATE', 'DELETE') NOT NULL,
+    table_name VARCHAR(255) NOT NULL,
+    query TEXT NOT NULL,
+    action_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+--FIN DE HISTORIAL DE CAMBIOS
+
+
+--TRIGGERS 
+
+--1ER TRIGER CON DATOS DE HISTORIAL DE CAMBIOS EN LA BASE DE DATOS 
+
+DELIMITER //
+
+CREATE TRIGGER after_product_insert
+AFTER INSERT ON producto
+FOR EACH ROW
+BEGIN
+    INSERT INTO transaction_history (user, action_type, table_name, query)
+    VALUES (
+        USER(),  -- Usa USER() para obtener el usuario actual si es posible
+        'INSERT',
+        'producto',
+        CONCAT(
+            'INSERT INTO producto (Nombre, Stock, Precio, Categoria) VALUES (',
+            QUOTE(NEW.Nombre), ', ',
+            NEW.Stock, ', ',
+            NEW.Precio, ', ',
+            QUOTE(NEW.Categoria), ')'
+        )
+    );
+END//
+
+
+
+
+DELIMITER ;
+
+--FIN DE 1ER TRIGGER 
+
+-- ALTER TABLE Caracteristicas ADD CONSTRAINT Caracteristicas_id_CaracteristicasProd_fk FOREIGN KEY (id_CaracteristicasProd) REFERENCES Prod-Car-Relation (id_CaracteristicasProd);
+-- ALTER TABLE Productos ADD CONSTRAINT Productos_id_Producto_fk FOREIGN KEY (id_Producto) REFERENCES Prod-Car-Relation (id_Producto);
+-- ALTER TABLE Productos ADD CONSTRAINT Productos_id_proveedor_fk FOREIGN KEY (id_proveedor) REFERENCES Proveedor (id_proveedor);
